@@ -1,0 +1,12 @@
+# Data files (contain your alerts and history)
+data/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

@@ -1,0 +1,35 @@
+{
+  "name": "reddit-scout",
+  "version": "1.0.0",
+  "description": "Open-source Reddit monitoring tool for indie hackers. Find pain points, track keywords, discover opportunities.",
+  "main": "scripts/scout.js",
+  "bin": {
+    "reddit-scout": "./scripts/scout.js",
+    "reddit-scheduler": "./scripts/scheduler.js"
+  },
+  "scripts": {
+    "scout": "node scripts/scout.js",
+    "scheduler": "node scripts/scheduler.js",
+    "notify": "node scripts/notify.js",
+    "check": "node scripts/scheduler.js check"
+  },
+  "keywords": [
+    "reddit",
+    "monitoring",
+    "alerts",
+    "indie-hackers",
+    "saas",
+    "lead-generation",
+    "content-ideas",
+    "pain-points"
+  ],
+  "author": "Nik Arora",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nickaroradev/reddit-scout.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
