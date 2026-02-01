@@ -1,11 +1,13 @@
 # RedditScout 🔍
 
-Fetch, analyze, and monitor Reddit for trends, pain points, and opportunities.
+Fetch, analyze, and monitor Reddit for trends, pain points, competitor mentions, and opportunities.
 
 ## Scripts
 
-- `scout.js` — Scan subreddits, find pain points, get threads
+- `scout.js` — Scan subreddits, find pain points, track competitors, export CSV
 - `scheduler.js` — Schedule posts + keyword alerts
+- `notify.js` — Check alerts and generate digests
+- `test.js` — Run test suite
 
 ## How It Works
 
@@ -25,14 +27,33 @@ reddit.com/r/subreddit/comments/id/.json → full thread + comments
 node skills/reddit-scout/scripts/scout.js scan <subreddit> [--limit 25] [--sort hot|new|top]
 ```
 
+### Find pain points with sentiment analysis
+```bash
+node skills/reddit-scout/scripts/scout.js pain <subreddit>
+# Returns posts categorized by: helpSeeking, frustration, pricing, featureRequests, etc.
+# Each post includes sentiment: { label: "positive"|"negative"|"neutral", compound: -1 to 1 }
+```
+
+### Multi-subreddit scan with CSV export
+```bash
+node skills/reddit-scout/scripts/scout.js multi "SaaS,startups,Entrepreneur" --pain --csv output.csv
+```
+
+### Track competitor mentions
+```bash
+node skills/reddit-scout/scripts/scout.js competitors "notion,slack,linear" "SaaS,startups"
+# Returns mentions grouped by competitor with sentiment breakdown
+```
+
+### Generate daily digest
+```bash
+node skills/reddit-scout/scripts/scout.js digest "SaaS,startups,indiehackers" --hours 24
+# Summarizes: total posts, sentiment overview, top posts, category breakdown
+```
+
 ### Search for keywords
 ```bash
 node skills/reddit-scout/scripts/scout.js search <subreddit> --keywords "hiring,looking for,need help"
-```
-
-### Find pain points (people asking for help/solutions)
-```bash
-node skills/reddit-scout/scripts/scout.js pain <subreddit>
 ```
 
 ### Get full thread with comments
@@ -40,24 +61,14 @@ node skills/reddit-scout/scripts/scout.js pain <subreddit>
 node skills/reddit-scout/scripts/scout.js thread <reddit-url-or-id>
 ```
 
-### Multi-subreddit scan
+### Export to CSV
 ```bash
-node skills/reddit-scout/scripts/scout.js multi "SaaS,startups,Entrepreneur" --pain
+node skills/reddit-scout/scripts/scout.js pain SaaS --csv matches.csv
 ```
 
 ---
 
 ## Scheduler Commands
-
-### Schedule a post
-```bash
-node skills/reddit-scout/scripts/scheduler.js post add <subreddit> <title> <content> <ISO-time>
-```
-
-### List scheduled posts
-```bash
-node skills/reddit-scout/scripts/scheduler.js post list [pending|all]
-```
 
 ### Add keyword alert
 ```bash
@@ -76,26 +87,61 @@ node skills/reddit-scout/scripts/scheduler.js check
 
 ---
 
+## Notify Commands (for automation)
+
+```bash
+# Check alerts + competitors
+node skills/reddit-scout/scripts/notify.js
+
+# Generate daily digest
+node skills/reddit-scout/scripts/notify.js digest
+
+# Check competitor mentions only
+node skills/reddit-scout/scripts/notify.js competitors
+```
+
+---
+
+## Pain Signal Categories
+
+| Category | Signals |
+|----------|---------|
+| helpSeeking | "need help", "how do i", "anyone know" |
+| frustration | "frustrated with", "hate when", "wish there was" |
+| alternatives | "alternative to", "better than", "switching from" |
+| pricing | "too expensive", "cheaper alternative", "price hike" |
+| featureRequests | "wish it had", "feature request", "missing feature" |
+| comparison | "vs", "which is better", "deciding between" |
+| hiring | "looking to hire", "need a developer" |
+
+---
+
 ## Output
 
 Returns JSON with:
 - `posts[]` — title, score, comments, url, author, created
-- `painPoints[]` — posts where people are asking for help/solutions
+- `painPoints[]` — posts with signals, categories, and sentiment
 - `trending[]` — high engagement posts
-- `opportunities[]` — potential leads, job posts, collab requests
+- `opportunities[]` — potential leads, job posts
+- `sentimentSummary` — positive/negative/neutral counts
 
 ## Use Cases
 
 - **Content ideas**: What's trending? What questions keep coming up?
 - **Market research**: What are people frustrated with?
 - **Lead gen**: Who's looking for help you can provide?
-- **Alpha hunting**: Early signals in niche communities
-- **Job hunting**: Monitor hiring threads
+- **Competitor intel**: What do people say about competitors?
+- **Pricing research**: Find pricing complaints
+- **Feature ideas**: What features are people requesting?
 
-## Pain Point Signals
+---
 
-The tool looks for posts containing:
-- "looking for", "need help", "anyone know"
-- "frustrated with", "hate when", "wish there was"
-- "recommend", "alternative to", "better than"
-- "hiring", "for hire", "job"
+## Web Dashboard
+
+Open `dashboard.html` in a browser for a visual interface to scan and explore results.
+
+## Running Tests
+
+```bash
+node skills/reddit-scout/scripts/test.js
+```

@@ -1,7 +1,7 @@
 {
   "name": "reddit-scout",
-  "version": "1.0.0",
-  "description": "Open-source Reddit monitoring tool for indie hackers. Find pain points, track keywords, discover opportunities.",
+  "version": "2.0.0",
+  "description": "Open-source Reddit monitoring tool for indie hackers. Find pain points, track competitors, analyze sentiment, discover opportunities.",
   "main": "scripts/scout.js",
   "bin": {
     "reddit-scout": "./scripts/scout.js",
@@ -11,7 +11,10 @@
     "scout": "node scripts/scout.js",
     "scheduler": "node scripts/scheduler.js",
     "notify": "node scripts/notify.js",
-    "check": "node scripts/scheduler.js check"
+    "check": "node scripts/scheduler.js check",
+    "digest": "node scripts/notify.js digest",
+    "test": "node scripts/test.js",
+    "dashboard": "npx serve ."
   },
   "keywords": [
     "reddit",
@@ -21,7 +24,9 @@
     "saas",
     "lead-generation",
     "content-ideas",
-    "pain-points"
+    "pain-points",
+    "sentiment-analysis",
+    "competitor-tracking"
   ],
   "author": "Nik Arora",
   "license": "MIT",
